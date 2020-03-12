@@ -281,7 +281,7 @@ The grammar for extracting Bangla noun phrases can be constructed with the follo
 ```
  NP: {<DAB|DRL>?<JJ|JQ>*<N.>} 
 ```
-The tags used to construct the grammar have been explained in the following table. Grammars for verb phrases, named entities, etc. can also be constructed in the similar fashion. 
+The tags used to construct the grammar as well as training the POS Tagger have been explained in the following table as specified by reserachers at **Microsof Research, India**. Grammars for verb phrases, named entities, etc. can also be constructed in the similar fashion. 
 
 | Name                   | Tag     | Example    |
 |------------------------|---------|------------|
@@ -316,3 +316,48 @@ The tags used to construct the grammar have been explained in the following tabl
 | SYMBOL                 | RDS     | \$         |
 | OTHER                  | RDX     | ৩৫৬        |
 
+
+
+Like grammar for noun phrases, grammar for verb phrases, postpositional phrases, etc. can be constructed with valid regular expressions.
+
+#### Code
+```python
+from bltk.langtools import Tokenizer
+from bltk.langtools import Chunker
+
+
+grammar = r"""
+  NP: {<DAB>?<JJ|JQ>*<N.>}      
+  """
+text = "আমি জানি আমার এই লেখাটির জন্য আমাকে অনেক গালমন্দ শুনতে হবে, তারপরেও লিখছি। " \
+       "লিখে খুব কাজ হয় সে রকম উদাহরণ আমার হাতে খুব বেশী নেই কিন্তু অন্তত নিজের ভেতরের ক্ষোভটুকু বের করা " \
+       "যায় সেটাই আমার জন্যে অনেক।"
+
+tokenizer = Tokenizer()
+sentences = tokenizer.sentence_tokenizer(text)
+tokened_text = [tokenizer.word_tokenizer(sentence) for sentence in sentences]
+
+noun_phrases = []
+for t in tokened_text:
+    chunky = Chunker(grammar=grammar, tokened_text=t)
+    chunk_tree = chunky.chunk()
+    for i in chunk_tree.subtrees():
+        if i.label() == "NP":
+            print(i)
+            noun_phrases.append(i)
+```
+
+#### Output
+```
+(NP এই/DAB লেখাটির/NC)
+(NP অনেক/JQ গালমন্দ/NC)
+(NP খুব/JQ কাজ/NC)
+(NP রকম/NC)
+(NP উদাহরণ/NC)
+(NP হাতে/NC)
+(NP ক্ষোভটুকু/NC)
+(NP করা/NV)
+
+```
+
+**Note:** BLTK's Phrase Chunker relies on BLTK's POS Tagger and NLTK's RegexParser. For a complete documentation on ***NLTK's Tree class***, which has been used in its RegexParser, follow [this link](https://3aransia.github.io/3aransia.api). 
