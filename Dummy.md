@@ -1,4 +1,3 @@
-
 # BLTK: The Bengali Natural Language Processing Toolkit
 
 A lightweight but robust toolkit for processing Bengali Language.
@@ -6,6 +5,16 @@ A lightweight but robust toolkit for processing Bengali Language.
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+
+
+## Overview
+BLTK is a lightweight but exceptionally robust language processing toolkit for the Bengali Language. I, Mr. Saimon Hossain, along with my friend, Mr. Liton Shil, have conducted research as a part of our undergraduate thesis under the supervision of our respected sir, Mr. Sowmitra Das. This is the outcome of our 6 month long research & development project. 
+
+I have choosen this name after taking inspiration from the popular natural language processing toolkit - **NLTK**.
+
+BLTK is still in its childhood. It's maturing everyday. It'll receive updates in the days to come. 
+
+If you want to contribute to BLTK's growth, please read the contribution section at the end of this page. 
 
 ## Supported Functionalities
 - Word Tokenization
@@ -360,4 +369,45 @@ for t in tokened_text:
 
 ```
 
-**Note:** BLTK's Phrase Chunker relies on BLTK's POS Tagger and NLTK's RegexParser. For a complete documentation on ***NLTK's Tree class***, which has been used in its RegexParser, follow [this link](https://3aransia.github.io/3aransia.api). 
+**Note:** BLTK's Phrase Chunker relies on BLTK's POS Tagger and NLTK's RegexParser. For a complete documentation on ***NLTK's Tree class***, which has been used in its RegexParser, follow [this link](https://www.nltk.org/api/nltk.html#nltk.tree.Tree).
+
+
+
+### 7) Stemming
+BLTK currently supports one stemmer - the **Ugra stemmer**. 
+It relies on some pre-arranged lists of suffixes and BLTK's POS Tagger for stemming Bangla words. The reason POS tagging is done before any stemming is even performed is that eliminating suffixes without determining part-of-speech of the words leads to serious miss-stemming issues.
+
+The inflectional morpheme 'ও'  or 'ই' modifies a word such as  'তারপরেও' . Ugra eliminates 'ও' or 'ই' from the end of the words and makes sure that after elimination of it, the lengths of the words are greater than or equal to two in terms of the number of characters.
+It should be noted that if 'ও' or 'ই' is an independent word, it's never removed.
+
+
+#### Code
+```python
+from bltk.langtools import UgraStemmer
+from bltk.langtools import Tokenizer
+
+
+text = "আমি জানি আমার এই লেখাটির জন্য আমাকে অনেক গালমন্দ শুনতে হবে, তারপরেও লিখছি। " \
+       "লিখে খুব কাজ হয় সে রকম উদাহরণ আমার হাতে খুব বেশী নেই কিন্তু অন্তত নিজের ভেতরের ক্ষোভটুকু বের করা " \
+       "যায় সেটাই আমার জন্যে অনেক।"
+
+stemmer = UgraStemmer()
+tokenizer = Tokenizer()
+tokenized_text = tokenizer.word_tokenizer(text)
+
+stem = stemmer.stem(tokenized_text)
+
+print(f"Before stemming: {tokenized_text}")
+print(f'After stemming: {stem}')
+
+
+```
+
+#### Output
+```
+Before stemming: ['আমি', 'জানি', 'আমার', 'এই', 'লেখাটির', 'জন্য', 'আমাকে', 'অনেক', 'গালমন্দ', 'শুনতে', 'হবে', ',', 'তারপরেও', 'লিখছি', '।', 'লিখে', 'খুব', 'কাজ', 'হয়', 'সে', 'রকম', 'উদাহরণ', 'আমার', 'হাতে', 'খুব', 'বেশী', 'নেই', 'কিন্তু', 'অন্তত', 'নিজের', 'ভেতরের', 'ক্ষোভটুকু', 'বের', 'করা', 'যায়', 'সেটাই', 'আমার', 'জন্যে', 'অনেক', '।']
+
+After stemming: ['আমি', 'জানি', 'আমি', 'এই', 'লেখা', 'জন্য', 'আমি', 'অনেক', 'গালমন্দ', 'শুনতে', 'হবে', ',', 'তারপরে', 'লিখছি', '।', 'লিখে', 'খুব', 'কাজ', 'হয়', 'সে', 'রকম', 'উদাহরণ', 'আমি', 'হাতে', 'খুব', 'বেশ', 'নে', 'কিন্তু', 'অন্তত', 'নিজের', 'ভেতর', 'ক্ষোভ', 'বের', 'করা', 'যায়', 'সেটি', 'আমি', 'জন্যে', 'অনেক', '।']
+
+
+```
