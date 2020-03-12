@@ -264,7 +264,7 @@ print(pos_tags)
 
 
 
-### 6) Phrase Chunking/Named-Entity Recognition
+### 7) Phrase Chunking/Named-Entity Recognition
 **BLTK's** phrase chunker can find out all the phrases in a given text as long as a correct grammatical syntax for that phrase is provided in the form of a regular expression. The performance of the chunker is unparalleled since it heavily relies on the BLTK's POS Tagger which has an outstanding accuracy and NLTK's Regular Expression Parser which is extremely powerful. 
 
 BLTK's Chunker class has method named ***chunk()*** that takes two parameters: ***a grammar*** in the form of regular expression, and ***a text*** from which phrases will be extracted.
@@ -367,7 +367,7 @@ for t in tokened_text:
 
 
 
-### 7) Stemming
+### 8) Stemming
 BLTK currently supports one stemmer - the **Ugra stemmer**. 
 It relies on some pre-arranged lists of suffixes and BLTK's POS Tagger for stemming Bangla words. The reason POS tagging is done before any stemming is even performed is that eliminating suffixes without determining part-of-speech of the words leads to serious miss-stemming issues.
 
