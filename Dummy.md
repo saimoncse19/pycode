@@ -12,7 +12,7 @@ A lightweight but robust toolkit for processing Bengali Language.
 - Sentence Tokenization
 - Sentence Splitting
 - Stopwords Filtering
-- Part-of-speech Tagging
+- Statistical Part-of-speech Tagging
 - Phrase Chunking/Named-Entity Recognition
 - Stemming
 
@@ -101,7 +101,7 @@ TOKENIZED WORDS
 ```
 
 ### 3) Sentence Tokenization
-In Bangla, most of the sentence delimiters are same as in English except full-stop. Statements and imperative sentences are terminated by । - the Devanagari Danda.
+In Bengali, most of the sentence delimiters are same as in English except full-stop. Statements and imperative sentences are terminated by । - the Devanagari Danda.
 Questions and exclamatory sentences are terminated by ? and ! respectively. 
 
 In **BLTK**, the ***sentence_tokenizer(text: str)*** method of the Tokenizer class performs sentence tokenization. It takes a text string and returns a list of tokenized sentences. The Following code shows how it is done.
@@ -130,7 +130,6 @@ print(sentences)
 TOKENIZED SENTENCES
 ['আমি জানি আমার এই লেখাটির জন্য আমাকে অনেক গালমন্দ শুনতে হবে, তারপরেও লিখছি।', 'লিখে খুব কাজ হয় সে রকম উদাহরণ আমার হাতে খুব বেশী নেই কিন্তু অন্তত নিজের ভেতরের ক্ষোভটুকু বের করা যায় সেটাই আমার জন্যে অনেক।']
 ```
-
 
 
 
@@ -178,7 +177,7 @@ INDIVIDUAL SENTENCE
 
 
 ### 5) Stopwords Filtering
-**BLTK's** ***remove_stopwords(words: list, *,  level: str = "soft")** function by default performs a soft stopwords elimination. It takes two parameters: a list of words and a keyword argument which can be either 'soft', 'moderate' or 'hard'. If no parameter is given, a soft elimination is performed.
+**BLTK's** ***remove_stopwords(words: list, *,  level: str = "soft")*** function by default performs a soft stopwords elimination. It takes two parameters: **a list of words** and a **keyword argument** which can be either 'soft', 'moderate' or 'hard'. If no parameter is given, a soft elimination is performed.
 
 Filtering stopwords is not always an ideal choice. In any language, there is no universal list of stop words, and sometimes different researchers use different methods for eliminating stopwords. If you are not sure about which level to use, use the default.
 
@@ -218,6 +217,45 @@ After moderate elimination: ['জানি', 'লেখাটির', 'গাল
 Length after moderate elimination: 15
 After hard elimination: ['জানি', 'লেখাটির', 'গালমন্দ', 'শুনতে', 'তারপরেও', 'লিখছি', 'লিখে', 'উদাহরণ', 'হাতে', 'বেশী', 'ভেতরের', 'ক্ষোভটুকু', 'বের']
 Length after hard elimination: 13
+
+```
+
+
+### 6) Statistical Part-of-speech Tagging
+**BLTK** includes a statistical POS tagger which has an overall system accuracy of 95.9%.
+The POS tagger works in sentence-level which means that instead of tagging a word individually, it tags words in a sentence or a phrase, taking features such as ***previous word*** and ***next word*** into consideration. It relies on the Logistic Regression classifier. 
+
+The BLTK's PosTagger class has a method ***pos_tag()*** which takes a list of split sentences and returns a list of tagged sentences. 
+Each tagged sentence is a list of ***tuples of length 2*** each, where the first index of the tuple holds the word itself and the last index holds its corresponding tag.
+
+
+#### Code
+```python
+from bltk.langtools import PosTagger
+from bltk.langtools import Tokenizer
+
+pos_tagger = PosTagger()
+tokenizer = Tokenizer()
+
+text = "আমি জানি আমার এই লেখাটির জন্য আমাকে অনেক গালমন্দ শুনতে হবে, তারপরেও লিখছি। " \
+       "লিখে খুব কাজ হয় সে রকম উদাহরণ আমার হাতে খুব বেশী নেই কিন্তু অন্তত নিজের ভেতরের ক্ষোভটুকু বের করা " \
+       "যায় সেটাই আমার জন্যে অনেক।"
+
+token_text = tokenizer.sentence_tokenizer(text)
+
+
+pos_tags = []
+for text in token_text:
+    tokened = tokenizer.word_tokenizer(text)
+    tagged = pos_tagger.pos_tag(tokened)
+    pos_tags.append(tagged)
+print(pos_tags)
+```
+
+#### Output
+```
+[[('আমি', 'PPR'), ('জানি', 'VM'), ('আমার', 'PPR'), ('এই', 'DAB'), ('লেখাটির', 'NC'), ('জন্য', 'PP'), ('আমাকে', 'PPR'), ('অনেক', 'JQ'), ('গালমন্দ', 'NC'), ('শুনতে', 'VM'), ('হবে', 'VA'), (',', 'PU'), ('তারপরেও', 'ALC'), ('লিখছি', 'VM'), ('।', 'PU')], [('লিখে', 'VM'), ('খুব', 'JQ'), ('কাজ', 'NC'), ('হয়', 'VM'), ('সে', 'PPR'), ('রকম', 'NC'), ('উদাহরণ', 'NC'), ('আমার', 'PPR'), ('হাতে', 'NC'), ('খুব', 'JQ'), ('বেশী', 'JJ'), ('নেই', 'VM'), ('কিন্তু', 'CSB'), ('অন্তত', 'CSB'), ('নিজের', 'PRF'), ('ভেতরের', 'NST'), ('ক্ষোভটুকু', 'NC'), ('বের', 'VM'), ('করা', 'NV'), ('যায়', 'VM'), ('সেটাই', 'PPR'), ('আমার', 'PPR'), ('জন্যে', 'PP'), ('অনেক', 'JQ'), ('।', 'PU')]]
+
 
 ```
 
