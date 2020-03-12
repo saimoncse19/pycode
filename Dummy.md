@@ -1,3 +1,4 @@
+
 # BLTK: The Bengali Natural Language Processing Toolkit
 
 A lightweight but robust toolkit for processing Bengali Language.
@@ -24,10 +25,6 @@ If you want to contribute to BLTK's growth, please read the contribution section
 - Statistical Part-of-speech Tagging
 - Phrase Chunking/Named-Entity Recognition
 - Stemming
-
-## Contribution
-
-For contribution you can refer to [CONTRIBUTING.md](CONTRIBUTING.md)
 
 
 
@@ -190,9 +187,6 @@ INDIVIDUAL SENTENCE
 
 Filtering stopwords is not always an ideal choice. In any language, there is no universal list of stop words, and sometimes different researchers use different methods for eliminating stopwords. If you are not sure about which level to use, use the default.
 
-```
-
-```
 
 #### Code
 ```python
@@ -411,3 +405,8 @@ After stemming: ['আমি', 'জানি', 'আমি', 'এই', 'লেখ�
 
 
 ```
+
+## Contribution
+If you want to contribute, please make a pull request and wait for PR confirmation. You can also send me a mail to saimoncse19@gmail.com with the subject **Contributing to BLTK** specifying a little bit about what you are interested to contribute.
+
+Contribution can also be made by adding issues.
