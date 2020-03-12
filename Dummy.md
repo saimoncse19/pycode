@@ -1,3 +1,4 @@
+
 # BLTK: The Bengali Natural Language Processing Toolkit
 
 A lightweight but robust toolkit for processing Bengali Language.
@@ -30,7 +31,7 @@ pip install bltk
 ## Usage
 
 ### 1) The Bengali Characters
-In **BLTK**, the *banglachars* module contains 7 lists of characters specific to the Bengali Language.
+In **BLTK**, the ***banglachars*** module contains 7 lists of characters specific to the Bengali Language.
 1. vowels
 2. vowel signs
 3. consonants
@@ -72,7 +73,7 @@ Others: ['৳', '৺', '্', 'ঀ', 'ঽ', '#', '$']
 
 
 ### 2) Word Tokenization
-In **BLTK**, the word_tokenizer(text: str) method of the Tokenizer class performs word tokenization. It takes a text string and returns a list of tokenized words. The Following code shows how it is done.
+In **BLTK**, the ***word_tokenizer(text: str)*** method of the Tokenizer class performs word tokenization. It takes a text string and returns a list of tokenized words. The Following code shows how it is done.
 
 #### Code
 ```python
@@ -103,7 +104,7 @@ TOKENIZED WORDS
 In Bangla, most of the sentence delimiters are same as in English except full-stop. Statements and imperative sentences are terminated by । - the Devanagari Danda.
 Questions and exclamatory sentences are terminated by ? and ! respectively. 
 
-In **BLTK**, the sentence_tokenizer(text: str) method of the Tokenizer class performs sentence tokenization. It takes a text string and returns a list of tokenized sentences. The Following code shows how it is done.
+In **BLTK**, the ***sentence_tokenizer(text: str)*** method of the Tokenizer class performs sentence tokenization. It takes a text string and returns a list of tokenized sentences. The Following code shows how it is done.
 
 #### Code
 ```python
@@ -134,7 +135,7 @@ TOKENIZED SENTENCES
 
 
 ### 4) Sentence Split
-The sentence_splitter(sentence: list) method takes a list of tokened sentences and then splits them into their corresponding list of tokened words with the help of word_tokenizer() method. The return value is a list of tokened words lists.
+The ***sentence_splitter(sentence: list)*** method takes a list of tokened sentences and then splits them into their corresponding list of tokened words with the help of word_tokenizer() method. The return value is a list of tokened words lists.
 
 #### Code
 ```python
@@ -174,4 +175,50 @@ INDIVIDUAL SENTENCE
 
 
 ```
+
+
+### 5) Stopwords Filtering
+**BLTK's** ***remove_stopwords(words: list, *,  level: str = "soft")** function by default performs a soft stopwords elimination. It takes two parameters: a list of words and a keyword argument which can be either 'soft', 'moderate' or 'hard'. If no parameter is given, a soft elimination is performed.
+
+Filtering stopwords is not always an ideal choice. In any language, there is no universal list of stop words, and sometimes different researchers use different methods for eliminating stopwords. If you are not sure about which level to use, use the default.
+
+```
+
+```
+
+#### Code
+```python
+from bltk.langtools import remove_stopwords
+from bltk.langtools import Tokenizer
+
+tokenizer = Tokenizer()
+
+text = "আমি জানি আমার এই লেখাটির জন্য আমাকে অনেক গালমন্দ শুনতে হবে, তারপরেও লিখছি। " \
+       "লিখে খুব কাজ হয় সে রকম উদাহরণ আমার হাতে খুব বেশী নেই কিন্তু অন্তত নিজের ভেতরের ক্ষোভটুকু বের করা " \
+       "যায় সেটাই আমার জন্যে অনেক।"
+
+tokened_words = tokenizer.word_tokenizer(text)
+
+print(f"Len of words: {len(tokened_words)}")
+print(f"After soft elimination: {(remove_stopwords(tokened_words))}")
+print(f"Length after soft elimination: {len(remove_stopwords(tokened_words))}")
+print(f"After moderate elimination: {(remove_stopwords(tokened_words, level='moderate'))}")
+print(f"Length after moderate elimination: {len(remove_stopwords(tokened_words, level='moderate'))}")
+print(f"After hard elimination: {(remove_stopwords(tokened_words, level='hard'))}")
+print(f"Length after hard elimination: {len(remove_stopwords(tokened_words, level='hard'))}")
+
+```
+
+#### Output
+```
+Len of words: 40
+After soft elimination: ['জানি', 'লেখাটির', 'অনেক', 'গালমন্দ', 'শুনতে', 'তারপরেও', 'লিখছি', 'লিখে', 'কাজ', 'রকম', 'উদাহরণ', 'হাতে', 'বেশী', 'অন্তত', 'ভেতরের', 'ক্ষোভটুকু', 'বের', 'করা', 'সেটাই', 'অনেক']
+Length after soft elimination: 20
+After moderate elimination: ['জানি', 'লেখাটির', 'গালমন্দ', 'শুনতে', 'তারপরেও', 'লিখছি', 'লিখে', 'উদাহরণ', 'হাতে', 'বেশী', 'ভেতরের', 'ক্ষোভটুকু', 'বের', 'যায়', 'জন্যে']
+Length after moderate elimination: 15
+After hard elimination: ['জানি', 'লেখাটির', 'গালমন্দ', 'শুনতে', 'তারপরেও', 'লিখছি', 'লিখে', 'উদাহরণ', 'হাতে', 'বেশী', 'ভেতরের', 'ক্ষোভটুকু', 'বের']
+Length after hard elimination: 13
+
+```
+
 
