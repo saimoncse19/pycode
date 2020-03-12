@@ -260,3 +260,59 @@ print(pos_tags)
 ```
 
 
+
+### 6) Phrase Chunking/Named-Entity Recognition
+**BLTK's** phrase chunker can find out all the phrases in a given text as long as a correct grammatical syntax for that phrase is provided in the form of a regular expression. The performance of the chunker is unparalleled since it heavily relies on the BLTK's POS Tagger which has an outstanding accuracy and NLTK's Regular Expression Parser which is extremely powerful. 
+
+BLTK's Chunker class has method named ***chunk()*** that takes two parameters: ***a grammar*** in the form of regular expression, and ***a text*** from which phrases will be extracted.
+
+This section explains how to create a noun phrase chunker using BLTK's Chunker class and a regular expression grammar. A noun phrase begins with an optional demonstrative, followed by zero or more adjectives/quantifiers and terminates with a noun.
+Some examples of Bangla noun phrases are given below:
+
+NP: (NP গণতন্ত্র/NC) - a noun phrase with only one noun.
+    
+NP: (NP মানবিক/JJ বোধ/NC) - a noun phrase with an adjective followed by a noun.
+    
+NP: (NP এই/DAB সুন্দর/JJ লেখাটির/NC) - a noun phrase with a demonstrative, followed by an adjective and terminated by a noun.
+
+
+The grammar for extracting Bangla noun phrases can be constructed with the following regular expression.
+
+```
+ NP: {<DAB|DRL>?<JJ|JQ>*<N.>} 
+```
+The tags used to construct the grammar have been explained in the following table. Grammars for verb phrases, named entities, etc. can also be constructed in the similar fashion. 
+
+| Name                   | Tag     | Example    |
+|------------------------|---------|------------|
+| COMMON NOUN            | NC      |  মানুষ      |
+| PROPER NOUN            | NP      | রবীন্দ্রনাথ  |
+| VERBAL NOUN            | NV      | ঘটানো      |
+| SPATIO-TEMPORAL NOUN   | NST     | উপরে       |
+| MAIN VERB              | VM      | করছিলেন    |
+| AUXILIARY VERB         | VA      | এসে        |
+| PRONOMINAL PRONOUN     | PPR     | আমাদের     |
+| REFLEXIVE PRONOUN      | PRF     | নিজ        |
+| RECIPROCAL PRONOUN     | PRC     | পরস্পর      |
+| RELATIVE PRONOUN       | PRL     | যাহার      |
+| WH-PRONOUN             | PWH     | কেন        |
+| ADJECTIVE              | JJ      | গুরুত্বপূর্ণ    |
+| QUANTIFIER             | JQ      | কয়েকটি     |
+| ABSOLUTE DEMONSTRATIVE | DAB     | এই         |
+| RELATIVE DEMONSTRATIVE | DRL     | যে         |
+| WH-DEMONSTRATIVE       | DWH     | কী         |
+| ADVERB of MANNER       | AMN     | আবার       |
+| ADVERB of LOCATION     | ALC     | যখন        |
+| CONDITIONAL PARTICIPLE | LC      | হলেই       |
+| VERBAL PARTICIPLE      | LV      | বইতে-বইতেই |
+| POSTPOSITION           | PP      | জন্য        |
+| COORDINATING PARTICLE  | CCD     | এবং        |
+| SUBORDINATING PARTICLE | CSB     | সুতরাং      |
+| CLASSIFIER PARTICLE    | CCL     | প্রমুখ       |
+| INTERJECTION           | CIN     | আরে        |
+| OTHER PARTICLE         | CX      | তাই        |
+| PUNCTUATION            | PU      | ৷          |
+| FOREIGN WORD           | RDF     | Schedule   |
+| SYMBOL                 | RDS     | \$         |
+| OTHER                  | RDX     | ৩৫৬        |
+
