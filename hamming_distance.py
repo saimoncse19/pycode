@@ -1,4 +1,4 @@
-"""" Calculation of Hamming Distance
+""" Calculation of Hamming Distance
 Author: Saimon
 email: saimoncse19@gmail.com
 Date: March 21, 2019 """
